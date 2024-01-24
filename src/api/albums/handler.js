@@ -51,10 +51,10 @@ class AlbumHandler {
         };
     }
 
-    putAlbumByIdHandler(request) {
-        this.validator.validateAlbumPayload(request.payload);
-        const { id } = request.params;
-        await this._service.editAlbumById(id, request.payload);
+  async putAlbumByIdHandler(req) {
+    this._validator.validateAlbumPayload(req.payload);
+    const {id} = req.params;
+    await this._service.editAlbumById(id, req.payload);
 
         return {
             status: 'success',

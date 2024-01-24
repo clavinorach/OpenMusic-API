@@ -10,7 +10,7 @@ const AlbumService = require('./services/postgres/AlbumService');
 const songs = require('./api/songs');
 const SongsService = require('./services/postgres/SongsService');
 
-const {AlbumValidator, SongValidator} = require {'./validator/musics'}
+const {AlbumValidator, SongValidator} = require ('./validator/songs')
 
 const init = async () => {
     const albumService = new AlbumService();

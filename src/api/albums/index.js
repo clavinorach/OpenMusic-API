@@ -1,4 +1,4 @@
-const AlbumHandler = require('/handler');
+const AlbumHandler = require('./handler');
 const routes = require('./routes');
 
 module.exports = {
