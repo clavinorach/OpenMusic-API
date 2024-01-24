@@ -1,0 +1,5 @@
+node_modules
+node_modules
+.npm install node-pg-migrateenv
+.env
+.prod.env
