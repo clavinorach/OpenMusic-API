@@ -14,7 +14,7 @@ class AlbumService {
 
         const query = {
             text: 'INSERT INTO albums VALUES($1, $2, $3) RETURNING id',
-            values: {id, name, year},
+            values: [id, name, year],
         };
 
         const res = await this._pool.query(query);
@@ -46,8 +46,8 @@ class AlbumService {
 
     async editAlbumById(id, {name, year}) {
         const query = {
-            text: 'UPDATE albums SET name = $1, year = $2 WHERE id = $3 RETURNING',
-            values: {name, year, id},
+            text: 'UPDATE albums SET name = $1, year = $2 WHERE id = $3 RETURNING id',
+            values: [name, year, id],
         };
 
         const res = await this._pool.query(query);

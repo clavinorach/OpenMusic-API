@@ -28,15 +28,13 @@ exports.up = pgm => {
           type: 'INTEGER',
           notNull: true,
         },
-        inserted_at: {
-          type: 'TEXT',
-          notNull: true,
-        },
-        updated_at: {
-          type: 'TEXT',
-          notNull: true,
-        },
       });
+      
+      pgm.addConstraint(
+        'songs',
+        'fk_song.album_id_album.id',
+        'FOREIGN KEY("albumId") REFERENCES albums(id) ON DELETE CASCADE',
+      );
     };
 
 
