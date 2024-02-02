@@ -1,4 +1,3 @@
-/* eslint-disablee require-jsdoc */
 const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
 const InvariantError = require('../../exceptions/InvariantError');

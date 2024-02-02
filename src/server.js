@@ -25,7 +25,7 @@ const init = async () => {
         },
       },
     });
-   
+
     await server.register([
         {
             plugin : albums,
@@ -48,7 +48,7 @@ const init = async () => {
       const { response } = request;
   
       if (response instanceof Error) {
-   
+
         // penanganan client error secara internal.
         if (response instanceof ClientError) {
           const newResponse = h.response({
@@ -59,7 +59,7 @@ const init = async () => {
           return newResponse;
         }
   
-        // mempertahankan penanganan client error oleh hapi secara native, seperti 404, etc.
+        // mempertahankan penanganan client error oleh hapi secara native.
         if (!response.isServer) {
           return h.continue;
         }

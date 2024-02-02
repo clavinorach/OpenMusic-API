@@ -28,6 +28,9 @@ exports.up = pgm => {
           type: 'INTEGER',
           notNull: true,
         },
+        "albumId": {
+          type: 'TEXT',
+        },
       });
       
       pgm.addConstraint(

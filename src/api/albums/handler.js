@@ -1,7 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable linebreak-style */
-
 class AlbumHandler {
     constructor(service, validator) {
         this._service = service
@@ -57,10 +53,10 @@ class AlbumHandler {
         await this._service.editAlbumById(id, request.payload);
     
         return {
-          status: 'success',
-          message: 'Album berhasil diperbarui',
+        status: 'success',
+        message: 'Album berhasil diperbarui',
         };
-      }
+    }
 
     async deleteAlbumByIdHandler(request) {
         const { id } = request.params;
