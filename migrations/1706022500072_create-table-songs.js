@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 exports.shorthands = undefined;
 
 exports.up = pgm => {
@@ -30,16 +28,16 @@ exports.up = pgm => {
         },
         "albumId": {
           type: 'TEXT',
+          notNull: true,
         },
       });
       
       pgm.addConstraint(
         'songs',
-        'fk_song.album_id_album.id',
+        'fk_songs_albumId_albums_id',
         'FOREIGN KEY("albumId") REFERENCES albums(id) ON DELETE CASCADE',
       );
-    };
-
+};
 
 exports.down = pgm => {
     pgm.dropTable('songs'); 
