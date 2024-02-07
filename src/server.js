@@ -15,6 +15,12 @@ const users = require('./api/users');
 const UsersService = require('./services/postgres/UsersService');
 const UsersValidator = require ('./validator/users');
 
+// Authentications
+const authentications = require('./api/authentications');
+const authenticationsService = require('./services/postgres/AuthenticationsService');
+const tokenManager = require('./tokenize/TokenManager');
+const AuthenticationsValidator = require('./validator/authentications');
+
 const {AlbumValidator, SongsValidator} = require ('./validator/songs')
 
 const init = async () => {
@@ -53,8 +59,17 @@ const init = async () => {
             service: usersService,
             validator: UsersValidator,
           },
-        }
-    ])
+        },
+        {
+          plugin: authentications,
+          options: {
+            authenticationsService,
+            usersService,
+            tokenManager: tokenManager,
+            validator: AuthenticationsValidator,
+          },
+        },
+    ]);
   
     server.ext('onPreResponse', (request, h) => {
       // mendapatkan konteks response dari request
