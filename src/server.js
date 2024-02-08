@@ -21,9 +21,11 @@ const authenticationsService = require('./services/postgres/AuthenticationsServi
 const TokenManager = require('./tokenize/TokenManager');
 const AuthenticationsValidator = require('./validator/authentications');
 
-const {AlbumValidator, SongsValidator} = require ('./validator/songs')
+const {AlbumValidator, SongsValidator} = require ('./validator/songs');
+const AuthenticationsService = require('./services/postgres/AuthenticationsService');
 
 const init = async () => {
+    const authenticationsService = new AuthenticationsService();
     const albumService = new AlbumService();
     const songsService = new SongsService();
     const usersService = new UsersService();
