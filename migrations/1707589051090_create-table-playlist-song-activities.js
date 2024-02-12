@@ -30,7 +30,11 @@ exports.up = (pgm) => {
         },
     });
 
-    pgm.createIndex('playlist_songs_activities', ['playlist_id', 'song_id', 'user_id']);
+    pgm.addConstraint (
+        'playlist_songs_activities',
+        'fk_playlist_songs_activities.playlist_id_playlists.id',
+        'FOREIGN KEY(playlist_id) REFERENCES playlists(id) ON DELETE CASCADE'
+    );
 };
 
 exports.down = (pgm) => {
