@@ -1,4 +1,6 @@
 require('dotenv').config();
+const path = require('path');
+
 const Hapi = require('@hapi/hapi');
 const ClientError = require('./exceptions/ClientError');
 const Jwt = require('@hapi/jwt');
@@ -26,19 +28,32 @@ const AuthenticationsValidator = require('./validator/authentications');
 
 // Playlist
 const playlist = require('./api/playlists');
-const PlaylistService = require('./services/postgres/PlaylistServices');
+const PlaylistService = require('./services/postgres/PlaylistsServices');
 const PlaylistValidator = require('./validator/playlists');
+
+// Playlist Songs
+const playlistSongs = require('./api/playlistSongs');
+const PlaylistSongsService = require('./services/postgres/PlaylistSongsService');
+const PlaylistSongsValidator = require('./validator/playlistsSongs');
+
+// playlist songs activities
+const playlistSongActivities = require('./api/playlistSongActivities');
+const PlaylistSongsActivitiesService = require('./services/postgres/PlaylistSongsActivitiesService');
 
 // Collaborations
 const collaborations = require('./api/collaborations');
-const CollaboraitonsService = require('./services/postgres/CollaborationsService');
+const CollaborationsService = require('./services/postgres/CollaborationsService');
 const CollaborationsValidator = require('./validator/collaborations');  
 
 const init = async () => {
-    const authenticationsService = new AuthenticationsService();
     const albumService = new AlbumService();
     const songsService = new SongsService();
     const usersService = new UsersService();
+    const authenticationsService = new AuthenticationsService();
+    const collaborationsService = new CollaborationsService();
+    const playlistService = new PlaylistService(collaborationsService);
+    const playlistSongService = new PlaylistSongsService();
+    const playlistSongsActivitiesService = new PlaylistSongsActivitiesService();
 
     const server = Hapi.server({
       port: 5000,
@@ -105,6 +120,40 @@ const init = async () => {
             validator: AuthenticationsValidator,
           },
         },
+        {
+          plugin: collaborations,
+          options:{
+            collaborationsService,
+            playlistService,
+            validator: CollaborationsValidator,
+          },
+        },
+
+        {
+          plugin: playlist,
+          options: {
+            service: playlistService,
+            validator: PlaylistValidator,
+          },
+        },
+        {
+          plugin: playlistSongs,
+          options: {
+            playlistService,
+            songsService,
+            playlistSongService,
+            playlistSongsActivitiesService,
+            validator: PlaylistSongsValidator,
+          },
+        },
+        {
+          plugin: playlistSongActivities,
+          options: {
+            playlistService,
+            playlistSongsActivitiesService,
+          },
+        },
+
     ]);
   
     server.ext('onPreResponse', (request, h) => {
