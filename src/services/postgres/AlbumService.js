@@ -17,11 +17,12 @@ class AlbumService {
         };
 
         const res = await this._pool.query(query);
-        if(!res.rows[0].id) {
+
+        if (!res.rows[0].id) {
             throw new InvariantError('Album gagal ditambahkan');
         }
-
-        return res.rows[0].id;;
+    
+        return res.rows[0].id;
     }
 
     async getAlbums() {
@@ -34,10 +35,10 @@ class AlbumService {
             text: 'SELECT * FROM albums WHERE id = $1',
             values: [id],
         };
-
+        
         const res = await this._pool.query(query);
 
-        if(!res.rowCount) {
+        if (!res.rowCount) {
             throw new NotFoundError('Album tidak ditemukan');
         }
         return res.rows[0];

@@ -11,6 +11,10 @@ class PlaylistSongsHandler {
         this._playlistSongService = playlistSongService;
         this._playlistSongActivitiesService = playlistSongActivitiesService;
         this._validator = validator;
+
+        this.postPlaylistSongsHandler = this.postPlaylistSongsHandler.bind(this);
+        this.getPlaylistSongsHandler = this.getPlaylistSongsHandler.bind(this);
+        this.deletePlaylistSongsHandler = this.deletePlaylistSongsHandler.bind(this); 
     }
 
     async postPlaylistSongsHandler(request, h) {
@@ -22,11 +26,11 @@ class PlaylistSongsHandler {
         await this._songService.getSongById(songId);
         await this._playlistService.verifyPlaylistAccess(id, credentialId);
 
-        await this._playlistSongService.addPlaylistSong(id, { songId});
+        await this._playlistSongService.addPlaylistSong(id, { songId });
 
         const action = 'add';
         const time = new Date().toISOString();
-        await this._playlistSongActivitiesService.addPlaylistSongActivity(id, {
+        await this._playlistSongActivitiesService.addPlaylistSongActivities(id, {
             songId, userId: credentialId, action, time,
         });
         
@@ -62,19 +66,19 @@ class PlaylistSongsHandler {
         const { id: credentialId } = request.auth.credentials;
 
         await this._playlistService.verifyPlaylistAccess(id, credentialId);
-        await this._playlistSongService.deletePlaylistSongsHandler(id, songId);
+        await this._playlistSongService.deletePlaylistSong(id, songId);
 
         const action = 'delete';
         const time = new Date().toISOString();
         await this._playlistSongActivitiesService.addPlaylistSongActivities(id, {
-            songId, userId, credentialId, action, time,
+            songId, userId: credentialId, action, time,
         });
 
         const response = h.response({
             status: 'success',
             message: 'Playlist song berhasil ditambahkan',
         });
-        response.code(201);
+        response.code(200);
         return response;
     }
 }
