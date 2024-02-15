@@ -3,3 +3,4 @@ node_modules
 .npm install node-pg-migrateenv
 .env
 .prod.env
+src/api/uploads/file
