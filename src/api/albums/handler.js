@@ -39,10 +39,12 @@ class AlbumHandler {
     async getAlbumByIdHandler(request) {
         const { id } = request.params;
         const album = await this._service.getAlbumById(id);
+        const coverUrl = `http://${process.env.HOST}:${process.env.PORT}/albums/${id}/cover/${filename}`;
         return {
             status: 'success',
             data: {
                 album,
+                coverUrl,
             },
         };
     }

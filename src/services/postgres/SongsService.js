@@ -45,7 +45,7 @@ class SongsService {
 
         const res = await this._pool.query(query);
 
-        if(!res.rowCount) {
+        if(!res.rows.length) {
             throw new NotFoundError('Lagu tidak ditemukan');
         }
         return res.rows[0];
@@ -66,7 +66,7 @@ class SongsService {
     
         const res = await this._pool.query(query);
     
-        if (!res.rowCount) {
+        if (!res.rows.lenth) {
           throw new NotFoundError('Gagal memperbaharui lagu. Id tidak ditemukan');
         }
       }

@@ -4,7 +4,7 @@ const path = require('path');
 const Hapi = require('@hapi/hapi');
 const ClientError = require('./exceptions/ClientError');
 const Jwt = require('@hapi/jwt');
-const path = require('path');
+const inert = require('@hapi/inert');
 
 // Album
 const albums = require('./api/albums');
@@ -56,6 +56,12 @@ const uploads = require('./api/uploads');
 const StorageService = require('./services/storage/StorageService');
 const UploadsValidator = require('./validator/uploads');
 
+// User Album Like
+const userAlbumLikes = require('./api/userAlbumLikes');
+const UserAlbumLikesService = require('./services/postgres/UserAlbumLikesService');
+const CacheService = require('./services/redis/CacheService');
+
+
 const init = async () => {
     const albumService = new AlbumService();
     const songsService = new SongsService();
@@ -66,6 +72,8 @@ const init = async () => {
     const playlistSongService = new PlaylistSongsService();
     const playlistSongsActivitiesService = new PlaylistSongsActivitiesService();
     const storageService = new StorageService(path.resolve(__dirname, 'api/uploads/file/images'));
+    const cacheService = new CacheService();
+    const userAlbumLikesService = new UserAlbumLikesService(cacheService);
 
     const server = Hapi.server({
       port: 5000,
@@ -182,6 +190,13 @@ const init = async () => {
           options: {
             service: storageService,
             validator: UploadsValidator,
+          }
+        },
+        {
+          plugin: userAlbumLikes,
+          options: {
+            userAlbumLikesService,
+            albumService,
           }
         },
 
