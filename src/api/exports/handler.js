@@ -1,9 +1,9 @@
 class ExportsHandler {
-    constructior(service, playlistService,validator) {
+    constructor(service, playlistService,validator) {
         this._service = service;
         this._playlistService = playlistService;
         this._validator = validator;
-
+        
         this.postExportPlaylistsHandler = this.postExportPlaylistsHandler.bind(this);
     }
 

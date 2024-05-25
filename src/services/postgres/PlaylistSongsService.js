@@ -63,6 +63,21 @@ class PlaylistSongsService {
             throw new NotFoundError('Lagu gagal dihapus dari playlist. Id tidak ditemukan');
         }
     }
+
+    async verifyPlaylistAccess(playlistId, userId) {
+        try {
+            await this._verifyPlaylistOnwer(playlistId, userId);
+        } catch(error) {
+            if( error instanceof NotFoundError) {
+                throw error;
+            }
+            try{
+                await this._collaborationsService.verifyCollaborator(playlistId, userId);
+            } catch {
+                throw error;
+            }
+        }
+    }
 }
 
 

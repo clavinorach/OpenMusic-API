@@ -21,11 +21,13 @@ const AlbumModel = ({
     name,
     year,
     songs,
+    cover,
 }) => ({
     id,
     name,
     year,
     songs,
+    coverUrl: cover,
 });
 
 module.exports = { SongModel, AlbumModel};

@@ -1,10 +1,10 @@
 class AlbumHandler {
-    constructor(service, validator) {
+    constructor(service, validator, storageService) {
         this._service = service
         this._validator = validator;
+        this._storageService = storageService;
 
         this.postAlbumHandler = this.postAlbumHandler.bind(this);
-        this.getAlbumsHandler = this.getAlbumsHandler.bind(this);
         this.getAlbumByIdHandler = this.getAlbumByIdHandler.bind(this);
         this.putAlbumByIdHandler = this.putAlbumByIdHandler.bind(this);
         this.deleteAlbumByIdHandler = this.deleteAlbumByIdHandler.bind(this);
@@ -12,8 +12,7 @@ class AlbumHandler {
 
     async postAlbumHandler(request, h) {
     this._validator.validateAlbumPayload(request.payload);
-    const { name, year } = request.payload;
-    const albumId = await this._service.addAlbum({name, year});
+    const albumId = await this._service.addAlbum(request.payload);
     
     const response = h.response({
         status: 'success',
@@ -26,27 +25,22 @@ class AlbumHandler {
     return response;    
 }
     
-    async getAlbumsHandler() {
-        const albums = await this._service.getAlbums();
-        return {
-            status: 'success',
-            data: {
-                albums,
-            },
-        };
-    }
 
-    async getAlbumByIdHandler(request) {
+    async getAlbumByIdHandler(request, h) {
         const { id } = request.params;
+        
         const album = await this._service.getAlbumById(id);
-        const coverUrl = `http://${process.env.HOST}:${process.env.PORT}/albums/${id}/cover/${filename}`;
-        return {
+        album.coverUrl = (album.coverUrl) ? `http://${process.env.HOST}:${process.env.PORT}/upload/images/${album.coverUrl}` : null;
+    
+        const response = h.response({
             status: 'success',
             data: {
-                album,
-                coverUrl,
+                album: album
             },
-        };
+        });
+        
+        response.code(200);
+        return response;
     }
 
     async putAlbumByIdHandler(request) {
@@ -69,5 +63,7 @@ class AlbumHandler {
             message: 'Album berhasil dihapus',
         };
     }
+
+
 }
     module.exports = AlbumHandler;

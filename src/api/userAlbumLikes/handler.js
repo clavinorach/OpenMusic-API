@@ -5,24 +5,21 @@ class UserAlbumLikesHandler {
 
         this.postUserAlbumLikeHandler = this.postUserAlbumLikeHandler.bind(this);
         this.getUserAlbumLikeHandler = this.getUserAlbumLikeHandler.bind(this);
+        this.deleteUserAlbumLikeHandler = this.deleteUserAlbumLikeHandler.bind(this);
     }
 
     async postUserAlbumLikeHandler( request, h) {
-        const { id: credentialId } = request.auth.credentials;
+        const { id: userId } = request.auth.credentials;
         const { id: albumId } = request.params;
+        await this._albumService.verifyExistAlbum(albumId);
+        // await this._albumService.getAlbumById(albumId);
+        await this._userAlbumLikeService.verifyAlbumLike(userId, albumId);
+        await this._userAlbumLikeService.likeAlbum(userId, albumId);
 
-        await this._albumService.getAlbumById(albumId);
-        const alreadyLike = await this._userAlbumLikeService.verifyAlbumLike(credentialId, albumId);
-
-        if(!alreadyLike) {
-            await this._userAlbumLikeService.likeAlbum(credentialId, albumId);
-        } else {
-            await this._userAlbumLikeService.unlikeAlbum(credentialId, albumId);
-        }
 
         const response = h.response({
             status: 'success',
-            message: 'Berhasil like/unlike album',
+            message: 'Berhasil like album',
         });
         response.code(201);
         return response;
@@ -30,20 +27,20 @@ class UserAlbumLikesHandler {
 
     async getUserAlbumLikeHandler(request, h) {
         const { id } = request.params;
-
         await this._albumService.getAlbumById(id);
 
         const { likes, from } = await this._userAlbumLikeService.getAlbumLike(id);
 
         if(from === 'cache') {
-            const response = h.response({
+            const response = h.response ({
                 status: 'success',
                 data: {
-                    likes,
+                    likes: likes,
                 },
             });
+
             response.code(200);
-            response.header('X-From-Cache', from);
+            response.header('X-Data-Source', 'cache');
             return response;
         }
 
@@ -53,9 +50,22 @@ class UserAlbumLikesHandler {
                 likes,
             },
         });
+
         response.code(200);
         return response;
     }
+
+    async deleteUserAlbumLikeHandler(request) {
+        const { id: albumId } = request.params
+        const { id: userId } = request.auth.credentials;
+        await this._userAlbumLikeService.unlikeAlbum(userId, albumId);
+
+        return {
+            status: 'success',
+            message: 'album batal di like',
+        }
+    }
+
 }
 
 module.exports = UserAlbumLikesHandler;

@@ -22,7 +22,7 @@ class PlaylistSongsHandler {
         const { songId } = request.payload;
         const { id: credentialId } = request.auth.credentials;
         const { id } = request.params;
-
+        await this._songService.verifySong(songId);
         await this._songService.getSongById(songId);
         await this._playlistService.verifyPlaylistAccess(id, credentialId);
 

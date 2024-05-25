@@ -7,7 +7,8 @@ const ImageHeadersSchema = Joi.object({
             'image/avif',
             'image/gif',
             'image/jpeg',
-            'image/webp',
+            'image/png',
+            'image/webp'
         )
 
         .required(),

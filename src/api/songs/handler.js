@@ -29,7 +29,10 @@ class SongsHandler {
       return response;
     }
   
-    async getSongsHandler() {
+    async getSongsHandler(request, h) {
+      const { title = '', performer = ''} = request.query;
+      await this._validator.validateQueryPayloadSchema({ title, performer })
+      
       const songs = await this._service.getSongs();
       return {
         status: 'success',
