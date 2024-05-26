@@ -34,7 +34,7 @@ Follow these steps to get the project up and running on your local machine:
 1. **Clone the repository:**
 
    ```sh
-   git clone https://github.com/yourusername/openmusic-api-v3.git
+   git clone https://github.com/clavinorach/OpenMusic-API.git
    cd openmusic-api-v3
 
 2. **Install Dependencies:**
@@ -56,3 +56,5 @@ Follow these steps to get the project up and running on your local machine:
 
    ```sh
    npm run start:dev
+
+You're all set! The API should now be running on your local machine. You can access it at http://localhost:your_port.
