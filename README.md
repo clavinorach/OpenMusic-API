@@ -42,12 +42,12 @@ Follow these steps to get the project up and running on your local machine:
    ```sh
    npm install
 
-3. **Install Dependencies:**
+3. **Configure environment variables:**
 
    ```sh
    DB_HOST=your_db_host DB_USER=your_db_user DB_PASSWORD=your_db_password DB_NAME=your_db_name JWT_SECRET=your_jwt_secret REDIS_HOST=your_redis_host
 
-4. **Configure environment variables:**
+4. **Run the migrations**
 
    ```sh
    npm run migrate up
